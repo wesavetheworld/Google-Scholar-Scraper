@@ -1,0 +1,21 @@
+{
+    "name": "webcode/google-scholar-scraper",
+    "description": "Scrapes Google Scholar for citation data.",
+    "keywords": ["Google Scholar"],
+    "license": "BSD",
+    "authors": [
+        {
+            "name": "R.A.Stone",
+            "email": "rastone@webcode.io"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Webcode\\GoogleScholarScraper\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
