@@ -11,8 +11,9 @@ class Parser {
         $obj = $this->_getRawData('citations', array('sortby' => $sortBy, 'user' => $user));
         unset($obj['children'][1]['children'][2]['children'][0]['children'][1]['children'][1]['children'][5]['children'][2]['children'][0]['children'][0]['children'][0]);
         $citationsRaw = array_values($obj['children'][1]['children'][2]['children'][0]['children'][1]['children'][1]['children'][5]['children'][2]['children'][0]['children'][0]['children']);
-        foreach ($citationsRaw as $publicationRow) {
-            $publications[$publicationRow['children'][0]['children'][0]['html']]['title'] = $publicationRow['children'][0]['children'][0]['href'];
+        foreach ($citationsRaw as $index => $publicationRow) {
+            $publications[$index]['title'] = $publicationRow['children'][0]['children'][0]['html'];
+            $publications[$index]['link'] = $publicationRow['children'][0]['children'][0]['href'];
         }
         return $publications;
     }
