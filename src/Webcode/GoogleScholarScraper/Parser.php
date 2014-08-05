@@ -7,12 +7,23 @@ class Parser {
     const BASE_URL = "http://scholar.google.com/";
 
     public function getCitations($user, $sortBy = 'pubdate') {
-        $html = fopen(BASE_URL . 'citations?' . http_build_query(array('sortby' => $sortBy, 'user' => $user)), "r");
-        return json_encode($this->_htmlToObject($html));
+        $publications = array();
+        $obj = $this->_getRawData('citations', array('sortby' => $sortBy, 'user' => $user));
+        unset($obj['children'][1]['children'][2]['children'][0]['children'][1]['children'][1]['children'][5]['children'][2]['children'][0]['children'][0]['children'][0]);
+        $citationsRaw = array_values($obj['children'][1]['children'][2]['children'][0]['children'][1]['children'][1]['children'][5]['children'][2]['children'][0]['children'][0]['children']);
+        foreach ($citationsRaw as $publicationRow) {
+            $publications[$publicationRow['children'][0]['children'][0]['html']]['title'] = $publicationRow['children'][0]['children'][0]['href'];
+        }
+        return $publications;
+    }
+
+    public function _getRawData($route, $args) {
+        $html = file_get_contents(self::BASE_URL . $route . '?' . http_build_query($args));
+        return $this->_htmlToObject($html);
     }
 
     private function _htmlToObject($html) {
-        $dom = new DOMDocument();
+        $dom = new \DOMDocument();
         $dom->loadHTML($html);
         return $this->_elementToObject($dom->documentElement);
     }
